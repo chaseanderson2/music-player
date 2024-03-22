@@ -9,10 +9,10 @@ const title = document.querySelector('#title')
 const cover = document.querySelector('#cover')
 
 //song titles
-const songs = ['hello', 'to be fair', 'my friends are cosmonauts']
+const songs = ['Hello', 'To Be Fair', 'My Friends Are Cosmonauts' ]
 
 //keep track of songs
-let songIndex = 2
+let songIndex = 1
 
 // initially load song into DOM
 loadSong(songs[songIndex])
@@ -23,3 +23,31 @@ function loadSong(song) {
     audio.src = `music/${song}.flac`
     cover.src = `images/${song}.jpg`
 }
+
+function playSong() {
+    musicContainer.classList.add('play')
+    playBtn.querySelector('i.fas').classList.remove('fa-play')
+    playBtn.querySelector('i.fas').classList.add('fa-pause')
+
+    audio.play()
+}
+
+function pauseSong() {
+    musicContainer.classList.remove('play')
+    playBtn.querySelector('i.fas').classList.add('fa-play')
+    playBtn.querySelector('i.fas').classList.remove('fa-pause')
+
+    audio.pause()
+}
+
+
+// event listeners
+playBtn.addEventListener('click', () => {
+    const isPlaying = musicContainer.classList.contains('play')
+
+    if(isPlaying) {
+        pauseSong()
+    }   else {
+        playSong()
+    }
+})
