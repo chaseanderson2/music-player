@@ -9,10 +9,10 @@ const title = document.querySelector('#title')
 const cover = document.querySelector('#cover')
 
 //song titles
-const songs = ['Hello', 'To Be Fair', 'My Friends Are Cosmonauts' ]
+const songs = [ 'Hello', 'My Friends Are Cosmonauts', 'To Be Fair' ]
 
 //keep track of songs
-let songIndex = 1
+let songIndex = 2
 
 // initially load song into DOM
 loadSong(songs[songIndex])
@@ -40,6 +40,44 @@ function pauseSong() {
     audio.pause()
 }
 
+function prevSong() {
+    songIndex--
+
+    if(songIndex < 0) {
+        songIndex = song.length - 1
+    }
+
+    loadSong(songs[songIndex])
+
+    playSong()
+}
+
+function nextSong() {
+    songIndex++
+
+    if(songIndex > songs.length - 1) {
+        songIndex = 0
+    }
+
+    loadSong(songs[songIndex])
+
+    playSong()
+}
+
+function updateProgress(e) {
+    const {duration, currentTime} = e.srcElement
+    const progressPercent = (currentTime / duration) * 100
+    progress.style.width = `${progressPercent}%`
+}
+
+function setProgress(e) {
+    const width = this.clientWidth
+    const clickX = e.offsetX
+    const duration = audio.duration
+
+    audio.currentTime = (clickX / width) * duration
+}
+
 
 // event listeners
 playBtn.addEventListener('click', () => {
@@ -51,3 +89,13 @@ playBtn.addEventListener('click', () => {
         playSong()
     }
 })
+
+//change song events
+prevBtn.addEventListener('click', prevSong)
+nextBtn.addEventListener('click', nextSong)
+
+audio.addEventListener('timeupdate', updateProgress)
+
+progressContainer.addEventListener('click', setProgress)
+
+audio.addEventListener('ended', nextSong)
